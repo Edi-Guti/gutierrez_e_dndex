@@ -4,16 +4,35 @@
 
 	// const is short for constant -> variables that shouldn't change
 	const piecesBoard = document.querySelector('.puzzle-pieces'),
-		puzzle = document.querySelector('.puzzle-board'),
+		puzzleBoard = document.querySelector('.puzzle-board'),
 		puzzleSelectors = document.querySelectorAll('#buttonHolder img'),
 		dropZones = document.querySelectorAll('.drop-zone');
 
 	let draggablePieces = piecesBoard.querySelectorAll("img")
 
+	// arrays are indexed and start at 0
+	const imageNameArray = ["topLeft", "topRight", "bottomLeft", "bottomRight"];
+
 	// debugger;
 
 	function switchImage() {
 		console.log(this);
+		// grab the corresponding background image (0, 1, 2 or 3)
+		// and get it from the images folder (backGround.jpg as an example)
+		let bgImage = `./images/backGround${this.dataset.puzzleref}.jpg`;
+
+		// set the backgroung image style on the dropzone container
+		puzzleBoard.style.backgroundImage = `url(${bgImage})`;
+
+		// work on switching the right-hand images so that they match the buttons at the bottom
+		draggablePieces.forEach((image, index) => {
+			// log the image and the current index
+			// console.log(image, index);
+
+			// try to change each image source
+			image.src = `images/${imageNameArray[index]}${this.dataset.puzzleref}.jpg`;
+			// debugger;
+		});
 	}
 	 
 	puzzleSelectors.forEach(thumbnail => thumbnail.addEventListener("click", switchImage));
@@ -42,7 +61,9 @@
 
 	// allow a user to drop an element
 	zone.addEventListener("drop", function(e) {
-		e.preventDefault();
+		e.preventDefault(); // don't do your default behaviour,
+		// instead, do the following:
+		
 		console.log('you dropped sumpin on me');
 
 		let draggedElement = e.dataTransfer.getData("text/plain");
